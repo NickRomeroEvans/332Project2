@@ -5,7 +5,10 @@
  * CSE 332 AB (Sam Wilson)
  * Project 1B
  */
+package phaseA;
 import java.util.EmptyStackException;
+
+import providedCode.GStack;
 
 public class GArrayStack<T> implements GStack<T> {
     private static final int RESIZE_FACTOR = 2;	//when resizing, multiply/divide by this constant

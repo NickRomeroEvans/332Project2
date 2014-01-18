@@ -27,7 +27,7 @@ public class StringComparator implements Comparator<String>{
 		int i; 				//loop variable
 		int numCompLetters; //how high will i increment?
 		
-		if (s1.length > s2.length) numCompLetters = s2.length();
+		if (s1.length() > s2.length()) numCompLetters = s2.length();
 		else 					   numCompLetters = s1.length();
 		
 		// If any letter does not match return +/-1
