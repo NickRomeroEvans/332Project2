@@ -13,9 +13,34 @@ import providedCode.*;
  */
 public class StringComparator implements Comparator<String>{
 
+	/** Compare two Strings and return an integer representing which comes
+	 *  first alphabetically.
+	 *
+	 * @param s1 The first String to compare
+	 * @param s2 The second String to compare
+	 * @return -1 if s1 comes first alphabetically
+	 *		    0 if s1 and s2 are identical
+	 *		   +1 if s2 comes first alphabetically
+	 */
 	@Override
 	public int compare(String s1, String s2) {
-		// TODO: To-be implemented
+		int i; 				//loop variable
+		int numCompLetters; //how high will i increment?
+		
+		if (s1.length > s2.length) numCompLetters = s2.length();
+		else 					   numCompLetters = s1.length();
+		
+		// If any letter does not match return +/-1
+		for (i = 0; i < numCompLetters; i++) {
+			if 		(s1.charAt(i) < s2.charAt(i)) return -1;
+			else if (s1.charAt(i) > s2.charAt(i)) return 1;
+		}
+		// Thus far s1 and s2 are matching. Return +/-1 depending upon
+		// length of strings (the shorter word comes first alphabetically)
+		if 		(numCompLetters == s1.length() && numCompLetters < s2.length()) return -1;
+		else if (numCompLetters == s2.length() && numCompLetters < s1.length()) return 1;
+		
+		// The strings match so we return 0
 		return 0;
 	}
 }
