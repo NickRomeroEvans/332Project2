@@ -32,9 +32,15 @@ public class WordCount {
     // Implement method that returns an array of DataCount objects containing each unique word.
     // If generics confuse you, write non-generic version first and then adjust it.
  	private static <E> DataCount<E>[] getCountsArray(DataCounter<E> counter) {
- 		System.err.println("Must implement getCountsArray in WordCount");
- 		System.exit(1);
- 		return null;
+ 		DataCount<E>[] dataRay = (DataCount<E>[]) new DataCount[counter.getSize()];
+ 		SimpleIterator<DataCount<E>> si =  counter.getIterator();
+ 		int i = 0;
+ 		while(si.hasNext()){
+ 			dataRay[i] = (DataCount<E>) si.next();
+ 			i = i + 1;
+ 			
+ 		}
+ 		return dataRay;
  	}
     
  	
