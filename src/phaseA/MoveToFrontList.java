@@ -16,33 +16,111 @@ import providedCode.*;
  * TODO: Develop appropriate JUnit tests for your MoveToFrontList.
  */
 public class MoveToFrontList<E> extends DataCounter<E> {
-
+	private int size; 							//Track size constant?
+	private ListNode head; 						//Head node
+	private Comparator<? super E> comparator;	//comparator
 	
+	/**
+	 * Constructor
+	 * 
+	 * 
+	 * */
 	public MoveToFrontList(Comparator<? super E> c) {
-		// TODO: To-be implemented
+		this.comparator = c;
+		this.head = null;
+		this.size = 0;
 	}
 	
+	/**	Increment counter, looks through list searching for data if found increments the count of the node and moves to front
+	 * If not found moves value to front of the list
+	 * 
+	 * 
+	 * */
 	@Override
 	public void incCount(E data) {
-		// TODO Auto-generated method stub
+		if(head == null){
+			head = new ListNode(data);
+			size++;
+		}else {
+			ListNode current = head;
+			if(current.value == data){
+				current.count++;
+				return;
+			}
+			while(current.next != null && current.next.value !=data){
+				current = current.next;
+			}
+			if(current.next == null){
+				ListNode temp = new ListNode(data);
+				temp.next = head;
+				this.head = temp; 
+				size++;
+			}else{
+				ListNode temp = current.next;
+				current.next = temp.next;
+				temp.next = head;
+				head = temp;
+				head.count++;
+			}
+		}
 	}
 
 	@Override
 	public int getSize() {
 		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	@Override
 	public int getCount(E data) {
 		// TODO Auto-generated method stub
-		return 0;
+		//Traverse data till find data return the count at that point
+		// Else return zero
+		if(head == null){
+			return 0;
+		}
+		ListNode current = head;
+		if(current.value == data){
+			return current.count;
+		}
+		while(current.next != null && current.next.value !=data){
+			current = current.next;
+		}
+		if(current.next == null){
+			return 0;
+		}else{
+			ListNode temp = current.next;
+			current.next = temp.next;
+			temp.next = head;
+			head = temp;
+			return head.count;
+		}
 	}
-
+	
+	
 	@Override
 	public SimpleIterator<DataCount<E>> getIterator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	/* ListNode is the class used to construct the linked list for
+	 * MoveToFrontList
+	 * */
+     public class ListNode{
+    	public E value;
+    	public int count;
+    	public ListNode next;
+    	
+    	/*Constructs a basic node that contains the provided value 
+    	 * and who's pointers are both to null
+    	 * */
+    	ListNode(E d){
+    		this.count = 1;
+    		this.next = null;
+    		this.value = d;
+    		size++;
+    	}
+    	
+    }
 }
