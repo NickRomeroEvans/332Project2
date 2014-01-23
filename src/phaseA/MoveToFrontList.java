@@ -43,11 +43,11 @@ public class MoveToFrontList<E> extends DataCounter<E> {
 			size++;
 		}else {
 			ListNode current = head;
-			if(current.value == data){
+			if(comparator.compare(data, current.value) ==0){
 				current.count++;
 				return;
 			}
-			while(current.next != null && current.next.value !=data){
+			while(current.next != null && comparator.compare(data, current.next.value) !=0){
 				current = current.next;
 			}
 			if(current.next == null){
@@ -80,10 +80,10 @@ public class MoveToFrontList<E> extends DataCounter<E> {
 			return 0;
 		}
 		ListNode current = head;
-		if(current.value == data){
+		if(comparator.compare(data, current.value) ==0){
 			return current.count;
 		}
-		while(current.next != null && current.next.value !=data){
+		while(current.next != null && comparator.compare(data, current.next.value) !=0){
 			current = current.next;
 		}
 		if(current.next == null){
@@ -100,8 +100,27 @@ public class MoveToFrontList<E> extends DataCounter<E> {
 	
 	@Override
 	public SimpleIterator<DataCount<E>> getIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleIterator<DataCount<E>>(){
+			ListNode itr = null;			
+			{
+				if(head != null){
+					this.itr = head;
+				}
+			}
+			
+			public boolean hasNext(){
+				return itr != null;
+			}
+			
+			public DataCount<E> next(){
+				if(!hasNext()) {
+        			throw new java.util.NoSuchElementException();
+        		}
+				DataCount<E>data = new DataCount<E>(itr.value, itr.count);
+				itr = itr.next;
+				return data;
+			}
+		};
 	}
 	
 	/* ListNode is the class used to construct the linked list for
