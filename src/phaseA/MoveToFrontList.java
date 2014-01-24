@@ -40,7 +40,6 @@ public class MoveToFrontList<E> extends DataCounter<E> {
 	public void incCount(E data) {
 		if(head == null){
 			head = new ListNode(data);
-			size++;
 		}else {
 			ListNode current = head;
 			if(comparator.compare(data, current.value) ==0){
@@ -54,7 +53,6 @@ public class MoveToFrontList<E> extends DataCounter<E> {
 				ListNode temp = new ListNode(data);
 				temp.next = head;
 				this.head = temp; 
-				size++;
 			}else{
 				ListNode temp = current.next;
 				current.next = temp.next;

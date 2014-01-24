@@ -35,6 +35,7 @@ public class WordCount {
  		DataCount<E>[] dataRay = (DataCount<E>[]) new DataCount[counter.getSize()];
  		SimpleIterator<DataCount<E>> si =  counter.getIterator();
  		int i = 0;
+ 		System.out.println(counter.getSize());
  		while(si.hasNext()){
  			dataRay[i] = (DataCount<E>) si.next();
  			i = i + 1;
@@ -64,6 +65,7 @@ public class WordCount {
             System.exit(1);
         }
         DataCounter<String> counter = new BinarySearchTree<String>(new StringComparator());
+       // DataCounter<String> counter = new MoveToFrontList<String>(new StringComparator());
         countWords(args[0], counter); 
         DataCount<String>[] counts = getCountsArray(counter);
         Sorter.insertionSort(counts, new DataCountStringComparator());

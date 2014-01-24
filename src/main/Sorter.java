@@ -1,4 +1,5 @@
 package main;
+import phaseA.FourHeap;
 import providedCode.Comparator;
 
 
@@ -31,6 +32,16 @@ public class Sorter {
     
     public static <E> void heapSort(E[] array, Comparator<E> comparator) {
     	// TODO: To-be implemented
+    	/*heapSort: Consists of two steps 1) Insert each element to be sorted into a heap (FourHeap)
+    	 *  */
+    	int i = 0;
+    	FourHeap<E> fh = new FourHeap<E>(comparator); 
+    	while(i < array.length){
+    		fh.insert(array[i]);
+    	}
+    	
+    	/*2) Remove each element from the heap, storing them in order in the output array.*/
+    	
     }
     
     public static <E> void topKSort(E[] array, Comparator<E> comparator, int k) {
