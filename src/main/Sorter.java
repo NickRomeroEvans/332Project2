@@ -38,8 +38,13 @@ public class Sorter {
     	FourHeap<E> fh = new FourHeap<E>(comparator); 
     	while(i < array.length){
     		fh.insert(array[i]);
+    		i++;
     	}
-    	
+    	i =0;
+    	while(!fh.isEmpty()){
+    		array[i] = fh.deleteMin();
+    		i++;
+    	}
     	/*2) Remove each element from the heap, storing them in order in the output array.*/
     	
     }
