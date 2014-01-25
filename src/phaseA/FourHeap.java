@@ -40,9 +40,11 @@ public class FourHeap<E> extends Heap<E> {
 			for (int i = 0; i < heap.length; i++) {
 				copyElements[i] = heap[i];
 			}
+			heap = copyElements;
 		}
 		//Next percalateUp
 		lastIndex++;
+		
 		int index = percolateUp(lastIndex, item);
 		heap[index] = item;
 		
@@ -53,7 +55,9 @@ public class FourHeap<E> extends Heap<E> {
 		// TODO Auto-generated method stub
 		return heap[0];
 	}
-
+	public E[] getHeap(){
+		return heap;
+	}
 	@Override
 	public E deleteMin() {
 		// TODO Auto-generated method stub
@@ -63,10 +67,7 @@ public class FourHeap<E> extends Heap<E> {
 		}
 		lastIndex--;
 		E val = heap[0];
-		int index = 0;
-		if(lastIndex!=0){
-			index= percolateDown(0, heap[lastIndex + 1]);
-		}
+		int	index= percolateDown(0, heap[lastIndex + 1]);
 		heap[index] = heap[lastIndex+1];
 		return val;
 	}
@@ -79,20 +80,41 @@ public class FourHeap<E> extends Heap<E> {
 	
 	
 	private int percolateUp(int index, E item){
-		while(index > 0 && comparator.compare(item, heap[index])<0){
+		while(index > 0 && comparator.compare(item, heap[(index-1)/4])<0){
 			heap[index] = heap[(index-1)/4];
-			index = (index-4)/4;
+			index = (index-1)/4;
 		}
 		return index; 
 		
 	}
 	
 	private int percolateDown(int index, E item){
-		while(4*index+1 <= size){
+		while(((4*index)+1) <= lastIndex){
 			//Note this is brute force and needs to be optimized
-			int[] indexs = {4*index+1, 4*index+2,4*index+3,4*index+4};
-			int mindex;
-			//if(indexs[1])
+			int mindex = 4*index+1;
+			
+			int track = (lastIndex - ((4*index)+4));
+			if(track <0){
+				//Know track is either -1 -2 -3
+				track = track + 3;
+			}else{
+				track = 3;
+			}		
+			//Loop through finding the index of the smallest value
+			for(int i =1; i<=track; i++){
+				if(comparator.compare(heap[mindex],heap[index*4+1+i])>0){
+					mindex = index*4+1+i;
+					
+				}
+			}
+
+			if(comparator.compare(heap[mindex], item)<0){
+				heap[index] = heap[mindex];
+				index = mindex;
+				
+			}else{
+				break;
+			}
 		}
 		return index;
 	}
