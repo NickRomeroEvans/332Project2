@@ -15,7 +15,7 @@ public class Sorter {
      * the same count, they should be ordered according to the comparator.
      * This code uses insertion sort. The code is generic, but in this project
      * we use it with DataCount<String> and DataCountStringComparator.
-     * @param counts array to be sorted.
+     * @param array array to be sorted.
 	 * @param comparator for comparing elements.
      */
     public static <E> void insertionSort(E[] array, Comparator<E> comparator) {
