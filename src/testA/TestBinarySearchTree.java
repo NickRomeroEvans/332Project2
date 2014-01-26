@@ -15,76 +15,17 @@ import test.TestDataCounter;
  * 6. Use timeouts to prevent being stuck in infinite loops
  */
 
-public class TestBinarySearchTree extends TestDataCounter<Integer> {
-	private static final int TIMEOUT = 2000; // 2000ms = 2sec
-	
-	
+public class TestBinarySearchTree extends TestDataCounter {	
 	/** Creates BinarySearchTree before each test cases **/
 	@Override
 	public DataCounter<Integer> getDataCounter() {
+		dcClass = "Tree";
 		return new BinarySearchTree<Integer>(new Comparator<Integer>() {
 			public int compare(Integer e1, Integer e2) { return e1 - e2; }
 		});
-	}
-
-	
-	
-	/** Test Size =======================================================================================**/
-
-	@Test(timeout = TIMEOUT)
-	public void test_size_empty(){
-		assertEquals("Tree should have size 0 when constructed", 0, dc.getSize());
-	}
-	
-	@Test(timeout = TIMEOUT) 
-	public void test_size_after_adding_single_num(){
-		addAndTestSize("Tree should have size 1 after adding single 5", new int[]{5}, 1);
-	}
-	
-	@Test(timeout = TIMEOUT)
-	public void test_size_after_adding_many_same_num(){
-		addAndTestSize("Tree should have size 1 after adding multiple 5", new int[]{5,5,5}, 1);
-	}
-
-	@Test(timeout = TIMEOUT)
-	public void test_size_after_adding_unique_nums(){
-		int[] testArray = {0,1,2,3,4};
-		addAndTestSize("Added " + Arrays.toString(testArray), testArray, 5);
-	}
-	
-	@Test(timeout = TIMEOUT)
-	public void test_size_after_adding_duplicate_nums(){
-		int[] testArray = {0,0,1,1,2,2,3,3,4,4};
-		addAndTestSize("Added " + Arrays.toString(testArray), testArray, 5);
-	}
-	
-	
-	
-	/** Test getCount =======================================================================================**/
-	
-	@Test(timeout = TIMEOUT)
-	public void test_get_count_after_adding_many_same_num(){
-		int key = 9;
-		int[] testArray = {9, 9, 9, 9, 9, 9, 9};
-		addAndGetCount("Added " + Arrays.toString(testArray) + ", key=" + key, testArray, key, 7);
-	}
-	
-	@Test(timeout = TIMEOUT)
-	public void test_get_count_after_adding_many_diff_nums(){
-		int key = 5;
-		int[] testArray = {0, 5, -1, 5, 1, 5, 2};
-		addAndGetCount("Added " + Arrays.toString(testArray) + ", key=" + key, testArray, key, 3);
-	}
-	
-	
+	}	
 	
 	/** Test Iterator =======================================================================================**/
-
-	@Test(timeout = TIMEOUT, expected = java.util.NoSuchElementException.class)
-	public void test_iterator_empty() {
-		SimpleIterator<DataCount<Integer>> iter = dc.getIterator();
-		iter.next(); 
-	}
 	
 	@Test(timeout = TIMEOUT)
 	public void test_iterator_get_all_data() {
@@ -109,13 +50,4 @@ public class TestBinarySearchTree extends TestDataCounter<Integer> {
 	
 	/** Private methods =======================================================================================**/
 
-	private void addAndTestSize(String message, int[] input, int unique){
-		for(int num : input) { dc.incCount(num); }
-		assertEquals(message, unique, dc.getSize());
-	}
-	
-	private void addAndGetCount(String message, int[] input, int key, int expected){
-		for(int num : input) { dc.incCount(num); }
-		assertEquals(message, expected, dc.getCount(key));
-	}
 }
