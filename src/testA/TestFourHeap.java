@@ -56,7 +56,7 @@ public class TestFourHeap{
 	}
 	
 	@Test(timeout = TIMEOUT)
-	public void test_empty_after_delete_one_item_inserted_mult_times(){
+	public void test_empty_after_deleting_mult_inserted_item(){
 		int[] test = {1,1,1,1,1,1};
 		for(int num : test){ fh.insert(num); }
 		fh.deleteMin();
@@ -75,6 +75,13 @@ public class TestFourHeap{
 	public void test_deletemin_one_item(){
 		fh.insert(1);
 		assertEquals(1, (int)fh.deleteMin());
+	}
+	
+	@Test(timeout = TIMEOUT, expected = java.lang.UnsupportedOperationException.class)
+	public void test_deletemin_twice_one_item(){
+		fh.insert(1);
+		fh.deleteMin();
+		fh.deleteMin();
 	}
 	
 	@Test(timeout = TIMEOUT)
@@ -111,6 +118,41 @@ public class TestFourHeap{
 		int[] expected = {1,2,3,4,5,6,7};
 		int[] received = deleteAndFillArray(expected.length);
 		assertArrayEquals("Elements inserted out of order should be deleted in order.", expected, received);
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_deleteMin_same_as_findMin(){
+		fh.insert(1);
+		assertEquals(fh.findMin(), fh.deleteMin());
+	}
+	
+	/** Test findMin =======================================================================================**/
+	
+	@Test(timeout = TIMEOUT, expected = java.lang.UnsupportedOperationException.class)
+	public void test_findMin_empty(){
+		fh.findMin();	
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_findMin_one_element(){
+		fh.insert(1);
+		assertEquals(1, (int)fh.findMin());
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_findMin_mult_sorted_elements(){
+		int[] test = {1,2,3,4,5,6,7};
+		for(int num : test){ fh.insert(num); }
+		
+		assertEquals(1, (int)fh.findMin());
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_findMin_mult_unsorted_elements(){
+		int[] test = {5,7,4,3,1,6,2};
+		for(int num : test){ fh.insert(num); }
+		
+		assertEquals(1, (int)fh.findMin());
 	}
 	
 	/** Private methods =======================================================================================**/
