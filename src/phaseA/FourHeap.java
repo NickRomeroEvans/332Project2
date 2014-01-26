@@ -7,7 +7,6 @@ import providedCode.*;
  * 1. It is exactly like the binary heap we studied, except nodes should have 4 children 
  * 	  instead of 2. Only leaves and at most one other node will have fewer children. 
  * 2. Use array-based implementation, beginning at index 0 (Root should be at index 0). 
- *    Construct the FourHeap by passing appropriate argument to superclass constructor.
  *    Hint: Complete written homework #2 before attempting this.   
  * 3. Throw appropriate exceptions in FourHeap whenever needed. For example, 
  * 	  when deleteMin on an empty heap, you could use UnderFlowException as is done in the Weiss text, 
@@ -17,20 +16,25 @@ import providedCode.*;
 public class FourHeap<E> extends Heap<E> {
 	private Comparator<? super E> comparator;	//comparator
 	private E[] heap;							//heap array
-	private static int RESIZE_FACTOR = 2;		//
-	private static int INTIAL_SIZE = 10;		//Intial size of the array
-	private int lastIndex;
+	private static int RESIZE_FACTOR = 2;		//used when the array needs to be resized
+	private static int INTIAL_SIZE = 10;		//initial size of the array
+	private int lastIndex;						//heap size - 1
 	
+	/** Constructor - initializes the comparator, the index of the last element, 
+	 * and the heap array.
+	 * @param c The passed comparator object
+	 */
 	public FourHeap(Comparator<? super E> c) {
-		// TODO: To-be implemented. Replace dummy parameter to superclass constructor
 		this.comparator = c;
 		this.lastIndex = -1;
 		this.heap = (E[]) new Object[INTIAL_SIZE];
 	}
 
+	/** Insert an item into the heap and sort the heap.
+	 * @param item The item to add to the heap
+	 */
 	@Override
 	public void insert(E item) {
-		// TODO Auto-generated method stub
 		//Check to see if can be contained in array else double array size
 		if(lastIndex == heap.length-1){
 			int newLen = heap.length * RESIZE_FACTOR;
@@ -42,7 +46,7 @@ public class FourHeap<E> extends Heap<E> {
 			}
 			heap = copyElements;
 		}
-		//Next percalateUp
+		//Next percolateUp
 		lastIndex++;
 		
 		int index = percolateUp(lastIndex, item);
@@ -50,20 +54,25 @@ public class FourHeap<E> extends Heap<E> {
 		
 	}
 
+	/** Return the minimum value of the heap (the root).
+	 * @throws UnsupportedOperationException if the heap is empty
+	 * @return The root of the heap
+	 */
 	@Override
 	public E findMin() {
-		// TODO Auto-generated method stub
+		if (isEmpty()) { throw new UnsupportedOperationException("Cannot find the minimum value of an empty heap."); }
 		return heap[0];
 	}
-	public E[] getHeap(){
-		return heap;
-	}
+	
+	/** Delete the minimum value in the heap (the root).
+	 * @throws UnsupportedOperationException if the heap is empty
+	 * @return The deleted value
+	 */
 	@Override
 	public E deleteMin() {
-		// TODO Auto-generated method stub
 		//Hold array[0]. then move item in nextIndex -1 then percalateDown NOTE: special case for only one element.
 		if(isEmpty()){
-			//throws something here
+			throw new UnsupportedOperationException("Cannot delete the minimum value of an empty heap.");
 		}
 		lastIndex--;
 		E val = heap[0];
@@ -72,22 +81,34 @@ public class FourHeap<E> extends Heap<E> {
 		return val;
 	}
 
+	/** Returns whether or not the heap is empty.
+	 * @return Whether or not there are no elements in the heap
+	 */
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
 		return lastIndex ==-1;
 	}
 	
-	
+	/** Find the hole for which a specified item will be placed in the heap, going upwards.
+	 * This is done to maintain heap structure.
+	 * @param index The index of the item to percolate upwards in the heap
+	 * @param item The item to percolate upwards
+	 * @return The index of the hole that item should be placed in
+	 */
 	private int percolateUp(int index, E item){
 		while(index > 0 && comparator.compare(item, heap[(index-1)/4])<0){
 			heap[index] = heap[(index-1)/4];
 			index = (index-1)/4;
 		}
 		return index; 
-		
 	}
 	
+	/** Find the hole for which a specified item will be placed in the heap, going downwards.
+	 * This is done to maintain heap structure.
+	 * @param index The index of the item to percolate downwards in the heap
+	 * @param item The item to percolate downwards
+	 * @return The index of the hole that item should be placed in
+	 */
 	private int percolateDown(int index, E item){
 		while(((4*index)+1) <= lastIndex){
 			//Note this is brute force and needs to be optimized

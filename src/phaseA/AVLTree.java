@@ -34,7 +34,8 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 	}
 	
 	
-	
+	/** {@inheritDoc} */
+	@Override
 	public void incCount(E data) {
 		 if(overallRoot == null){
 			 overallRoot = new AVLNode(data);
