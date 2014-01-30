@@ -55,15 +55,6 @@ public class TestFourHeap{
 		assertTrue("Heap should be empty after deleting all its elements.", fh.isEmpty());
 	}
 	
-	@Test(timeout = TIMEOUT)
-	public void test_empty_after_deleting_mult_inserted_item(){
-		int[] test = {1,1,1,1,1,1};
-		for(int num : test){ fh.insert(num); }
-		fh.deleteMin();
-		
-		assertTrue("Heap should be empty after deleting its only element.", fh.isEmpty());
-	}
-	
 	/** Test deleteMin =======================================================================================**/
 	
 	@Test(timeout = TIMEOUT, expected = java.lang.UnsupportedOperationException.class)

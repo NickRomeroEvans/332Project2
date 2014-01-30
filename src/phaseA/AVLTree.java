@@ -26,9 +26,6 @@ import phaseA.GArrayStack;
  *    testA package).
  */
 public class AVLTree<E> extends BinarySearchTree<E> {
-	//overallRoot
-	//comparator
-	//size
 	public AVLTree(Comparator<? super E> c) {
 		super(c);
 	}
@@ -78,17 +75,20 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 	  * Adjusts heights and ensures that the tree maintains AVL properties
 	  *	Note: make private after testing
 	  * */
-	 public void verifyAVL(GArrayStack<AVLNode> path){
+	private void verifyAVL(GArrayStack<AVLNode> path){
 		 
 		 while(!path.isEmpty()){
 			 AVLNode n = path.pop();
 			 int hf = heightFactor(n);
-			 if(hf >=2 && hf <= -2){
+			 // AB: changed from (hf >= 2 && hf <= -2)
+			 if(hf >=2 || hf <= -2){
+				 // abs(difference between left and right subtrees) >= 2, meaning tree is unbalanced
 				 if(hf >= 2){
 					 //know that height of left is bigger
 					 AVLNode left = (AVLNode) n.left;
 					 hf = heightFactor(left);
 					 if(hf == -1){
+						 //right tree of n's left tree is bigger by one
 						 rotateLeftRight(n);
 					 }else{
 						 rotateLeftLeft(n);
@@ -98,18 +98,23 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 					 AVLNode right = (AVLNode) n.right;
 					 hf = heightFactor(right);
 					 if(hf == -1){
+						 //right tree of n's right tree is bigger by one
 						 rotateRightRight(n);
 					 }else{
 						 rotateRightLeft(n);
 					 }
 				 }
 			 }else{
-				 n.height++;
+				 n.height++; // AB: why is this here?
 			 }
 		 }
 	 }
 	 
-	 public void rotateLeftLeft(AVLNode n){
+	 /**
+	  * Solves a case 1 imbalance through a single rotation.
+	  * @param n the imbalanced node
+	  */
+	 private void rotateLeftLeft(AVLNode n){
 		 AVLNode a = n;
 		 AVLNode b = (AVLNode)n.left;
 		 AVLNode y = (AVLNode)b.right;
@@ -118,7 +123,11 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 		 a.left = y;
 	 }
 	 
-	 public void rotateRightRight(AVLNode n){
+	 /**
+	  * Solves a case 4 imbalance through a single rotation.
+	  * @param n the imbalanced node
+	  */
+	 private void rotateRightRight(AVLNode n){
 		 AVLNode a = n;
 		 AVLNode b = (AVLNode)n.right;
 		 AVLNode y = (AVLNode)b.left;
@@ -127,7 +136,11 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 		 a.right = y;
 	 }
 	 
-	 public void rotateLeftRight(AVLNode n){
+	 /**
+	  * Solves a case 2 imbalance through a double rotation.
+	  * @param n the imbalanced node
+	  */
+	 private void rotateLeftRight(AVLNode n){
 		 AVLNode a = n;
 		 AVLNode b = (AVLNode)a.left;
 		 AVLNode c = (AVLNode)b.right;
@@ -139,7 +152,11 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 		 b.right = u;
 	 }
 	 
-	 public void rotateRightLeft(AVLNode n){
+	 /**
+	  * Solves a case 3 imbalance through a double rotation.
+	  * @param n the imbalanced node
+	  */
+	 private void rotateRightLeft(AVLNode n){
 		 AVLNode a = n;
 		 AVLNode b = (AVLNode)a.right;
 		 AVLNode c = (AVLNode)b.left;
@@ -151,35 +168,64 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 		 b.left = v;
 	 }
 	 
-	 //Compares height of left node with right node
+	 /**
+	  * Compares the heights of a node's left and right nodes.
+	  * @param n the node whose children to examine
+	  * @return hl - hr < 0 : right tree is bigger
+	  * 		hl - hr > 0 : left tree is bigger
+	  * 		hl - hr == 0: equal heights
+	  */
 	 private int heightFactor(AVLNode n){
-		 int hr,hl;
+		 int hr,hl; //height right, height left
 		 if(n.left != null){
 			 hl = ((AVLNode)n.left).height;
 		 }else{
-			 hl = -1;
+			 hl = -1; // left is null; height of -1
 		 }
 		 
 		 if(n.right !=null){
 			 hr = ((AVLNode)n.right).height;
 		 }else{
-			 hr = -1;
+			 hr = -1; // right is null; height of -1
 		 }
 		 return hl - hr;
 	 }
 	
-	// TODO: To-be implemented
-	public class AVLNode extends BSTNode{
-		public int height;
-		//left
-		//right
-		//data
-		//count
+	 /**
+	  * Public access method used to retrieve the height of a node.
+	  * @param it the iterator, pointing to the node in question
+	  * @return the height of the next node
+	  */
+	 public int getHeight(SimpleIterator<E> it) {
+		 AVLNode n = (AVLNode)it.next();
+		 return n.getHeight();
+	 }
+	 
+	 /**
+	  * AVLNode is a class for a node in an AVLTree. It holds its
+	  * height, left and right nodes, count, and data. 
+	  * @author Austin
+	  *
+	  */
+	 private class AVLNode extends BSTNode{
+		private int height;	//the height of this node
 		
-		
-		public AVLNode(E data){
+		/**
+		 * Constructor. Call the super constructor and initialize 
+		 * height to 0. 
+		 * @param data The data to be stored in this node
+		 */
+		private AVLNode(E data){
 			super(data);
 			height = 0;
+		}
+		
+		/**
+		 * Public access method to return this node's height.
+		 * @return this node's height
+		 */
+		public int getHeight(){
+			return height;
 		}
 	}
 

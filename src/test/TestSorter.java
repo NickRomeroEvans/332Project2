@@ -32,14 +32,6 @@ public class TestSorter {
 	}
 	
 	@Test(timeout = TIMEOUT)
-	public void test_heapSort_mult_same_element() {
-		Integer[] expected = {1};
-		Integer[] test = {1, 1, 1, 1, 1};
-		Sorter.heapSort(test, comparator);
-		assertArrayEquals(test, expected);
-	}
-	
-	@Test(timeout = TIMEOUT)
 	public void test_heapSort_sorted_unique_inserts(){
 		Integer[] expected = {0, 1, 2, 3, 4};
 		Integer[] test = expected;

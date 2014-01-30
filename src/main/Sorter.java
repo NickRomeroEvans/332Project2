@@ -30,6 +30,11 @@ public class Sorter {
         }
     }
     
+    /**
+     * Sort a FourHeap.
+     * @param array The FourHeap's array representation
+     * @param comparator A comparator used to compare values in array
+     */
     public static <E> void heapSort(E[] array, Comparator<E> comparator) {
     	/*heapSort: Consists of two steps*/
     	
