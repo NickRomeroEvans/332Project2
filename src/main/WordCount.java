@@ -63,7 +63,7 @@ public class WordCount {
             System.err.println("Usage: filename of document to analyze");
             System.exit(1);
         }
-        DataCounter<String> counter = new BinarySearchTree<String>(new StringComparator());
+        DataCounter<String> counter = new AVLTree<String>(new StringComparator());
        // DataCounter<String> counter = new MoveToFrontList<String>(new StringComparator());
         countWords(args[0], counter); 
         DataCount<String>[] counts = getCountsArray(counter);

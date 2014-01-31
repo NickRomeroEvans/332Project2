@@ -1,4 +1,5 @@
 package phaseA;
+import static org.junit.Assert.assertTrue;
 import providedCode.*;
 import phaseA.GArrayStack;
 
@@ -34,141 +35,136 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 	/** {@inheritDoc} */
 	@Override
 	public void incCount(E data) {
-		 if(overallRoot == null){
-			 overallRoot = new AVLNode(data);
-			 return;
-		 }
-		 AVLNode currentNode = (AVLNode)overallRoot;
-		 GArrayStack<AVLNode> path = new GArrayStack<AVLNode>();
-		 
-	     while (true) {
-	        // compare the new data with the data at the current node
-	        int cmp = comparator.compare(data, currentNode.data);
-	        if(cmp == 0) {            // a. Current node is a match
-	        	currentNode.count++;
-	        	return;
-	        }else if(cmp < 0) {       // b. Data goes left of current node
-	            if(currentNode.left == null) {
-	            	//need to change this
-	            	currentNode.left = new AVLNode(data);
-	            	verifyAVL(path);
-	            	return;
-	            }	
-	            path.push(currentNode);
-	            currentNode = (AVLNode)currentNode.left;
-	        }else{                    // c. Data goes right of current node
-	        	if(currentNode.right == null) {
-	        		//need to change this
-	        		currentNode.right = new AVLNode(data);
-	        		verifyAVL(path);
-	            	return;
-	            }
-	        	
-	        	path.push(currentNode);
-	        	currentNode = (AVLNode)currentNode.right;
-	         }
-	     }
+		 overallRoot = helperInsert((AVLNode)overallRoot,data); 
 	 }
-
+	
+	//Method that scans through tree inserts node and makes adjustments according to the
+	// definition of an AVL Tree.
+	private AVLNode helperInsert(AVLNode n, E data){
+		if(n == null){
+			n = new AVLNode(data);
+		}else{
+			// compare the new data with the data at the current node
+			int cmp = comparator.compare(data, n.data);
+		    if(cmp == 0) {            // a. Current node is a match
+		    	n.count++;
+		    }else if(cmp < 0){
+		    	n.left = helperInsert((AVLNode)n.left,data);
+		    	if(heightFactor(n) >= 2||heightFactor(n) <= -2){
+		    		if(comparator.compare(data, n.left.data)< 0){
+		    			n = rotateLeftLeft(n);
+		    		}else{
+		    			n = rotateLeftRight(n);
+		    		}
+		    	}
+		    }else{
+		    	n.right = helperInsert((AVLNode)n.right, data);
+		    	if(heightFactor(n) >= 2||heightFactor(n) <= -2){
+		    		if(comparator.compare(data, n.right.data)<0){
+		    			n = rotateRightLeft(n);
+		    		}else{
+		    			n = rotateRightRight(n);
+		    		}
+		    	}
+		    }
+		         
+		}
+		n.height = determineHeight(n);
+		return n;
+	}
 	 
-	 /**
+	
+	public boolean checkRep(){
+		return verifyAVL((AVLNode)overallRoot);
+	}
+	 /*
 	  * Adjusts heights and ensures that the tree maintains AVL properties
-	  *	Note: make private after testing
+	  *	Note: this is a testing method now for testing now rather than method for insert
+	  *	
 	  * */
-	private void verifyAVL(GArrayStack<AVLNode> path){
-		 
-		 while(!path.isEmpty()){
-			 AVLNode n = path.pop();
-			 int hf = heightFactor(n);
-			 // AB: changed from (hf >= 2 && hf <= -2)
-			 if(hf >=2 || hf <= -2){
-				 // abs(difference between left and right subtrees) >= 2, meaning tree is unbalanced
-				 if(hf >= 2){
-					 //know that height of left is bigger
-					 AVLNode left = (AVLNode) n.left;
-					 hf = heightFactor(left);
-					 if(hf == -1){
-						 //right tree of n's left tree is bigger by one
-						 rotateLeftRight(n);
-					 }else{
-						 rotateLeftLeft(n);
-					 }
-				 }else{
-					 //know that height of right side is bigger
-					 AVLNode right = (AVLNode) n.right;
-					 hf = heightFactor(right);
-					 if(hf == -1){
-						 //right tree of n's right tree is bigger by one
-						 rotateRightRight(n);
-					 }else{
-						 rotateRightLeft(n);
-					 }
-				 }
-			 }else{
-				 n.height++; // AB: why is this here?
-			 }
+	private boolean verifyAVL(AVLNode n){
+		 if(n == null){
+			 return true;
 		 }
+		 if(n.left != null){
+			if(n.right!=null){
+				if(heightFactor(n)>=2 || heightFactor(n)<=-2){
+					return false;
+				}else{
+					return verifyAVL((AVLNode)n.left) && verifyAVL((AVLNode)n.right);
+				}
+			}else{
+				if(n.height !=1){
+					
+					return false;
+				}else{
+					return verifyAVL((AVLNode)n.left);
+				}
+			}
+		  }else if(n.right != null){
+			  if(n.height != 1){
+				  return false;
+			  }
+			  return verifyAVL((AVLNode)n.right);
+		}
+		return n.height == 0 && n.right == null && n.left == null;
 	 }
-	 
-	 /**
+	
+	//Determines the height of the node based upon it's childrens' height.
+	 private int determineHeight(AVLNode n){
+		 if(heightFactor(n) > 0){
+			 	return ((AVLNode)n.left).height + 1;
+		}else if(n.right != null){
+			return((AVLNode)n.right).height + 1;
+		}else{
+			return 0;
+		}
+	 }
+	 /*
 	  * Solves a case 1 imbalance through a single rotation.
 	  * @param n the imbalanced node
 	  */
-	 private void rotateLeftLeft(AVLNode n){
-		 AVLNode a = n;
+	 private AVLNode rotateLeftLeft(AVLNode n){
 		 AVLNode b = (AVLNode)n.left;
-		 AVLNode y = (AVLNode)b.right;
-		 n= b;
-		 b.right = a;
-		 a.left = y;
+		 n.left = (AVLNode)b.right;
+		 b.right = n;
+		 n.height = determineHeight(n);
+		 b.height = determineHeight(b);
+		 return b;
 	 }
 	 
-	 /**
+	 /*
 	  * Solves a case 4 imbalance through a single rotation.
 	  * @param n the imbalanced node
 	  */
-	 private void rotateRightRight(AVLNode n){
-		 AVLNode a = n;
+	 private AVLNode rotateRightRight(AVLNode n){
 		 AVLNode b = (AVLNode)n.right;
-		 AVLNode y = (AVLNode)b.left;
-		 n= b;
-		 b.left = a;
-		 a.right = y;
+		 n.right = (AVLNode)b.left;
+		 b.left = n;
+		 n.height = determineHeight(n);
+		 b.height = determineHeight(b);
+		 return b;
 	 }
 	 
-	 /**
+	 /*
 	  * Solves a case 2 imbalance through a double rotation.
 	  * @param n the imbalanced node
 	  */
-	 private void rotateLeftRight(AVLNode n){
-		 AVLNode a = n;
-		 AVLNode b = (AVLNode)a.left;
-		 AVLNode c = (AVLNode)b.right;
-		 AVLNode u = (AVLNode)c.left;
-		 AVLNode v = (AVLNode)c.right;
-		 c.right = a;
-		 c.left = b;
-		 a.left = v;
-		 b.right = u;
+	 private AVLNode rotateLeftRight(AVLNode n){
+		 n.left = rotateRightRight((AVLNode)n.left);
+		 return rotateLeftLeft(n);
 	 }
 	 
-	 /**
+	 /*
 	  * Solves a case 3 imbalance through a double rotation.
 	  * @param n the imbalanced node
 	  */
-	 private void rotateRightLeft(AVLNode n){
-		 AVLNode a = n;
-		 AVLNode b = (AVLNode)a.right;
-		 AVLNode c = (AVLNode)b.left;
-		 AVLNode u = (AVLNode)c.left;
-		 AVLNode v = (AVLNode)c.right;
-		 c.left = a;
-		 c.right = b;
-		 a.right = u;
-		 b.left = v;
+	 private AVLNode rotateRightLeft(AVLNode n){
+		 n.right = rotateLeftLeft((AVLNode)n.right);
+		 return rotateRightRight(n);
 	 }
-	 
-	 /**
+	
+	 /*
 	  * Compares the heights of a node's left and right nodes.
 	  * @param n the node whose children to examine
 	  * @return hl - hr < 0 : right tree is bigger
@@ -188,17 +184,9 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 		 }else{
 			 hr = -1; // right is null; height of -1
 		 }
+		 
+		 //System.out.print(hl - hr);
 		 return hl - hr;
-	 }
-	
-	 /**
-	  * Public access method used to retrieve the height of a node.
-	  * @param it the iterator, pointing to the node in question
-	  * @return the height of the next node
-	  */
-	 public int getHeight(SimpleIterator<E> it) {
-		 AVLNode n = (AVLNode)it.next();
-		 return n.getHeight();
 	 }
 	 
 	 /**
@@ -220,13 +208,6 @@ public class AVLTree<E> extends BinarySearchTree<E> {
 			height = 0;
 		}
 		
-		/**
-		 * Public access method to return this node's height.
-		 * @return this node's height
-		 */
-		public int getHeight(){
-			return height;
-		}
 	}
 
 }
