@@ -1,9 +1,15 @@
 package phaseA;
 import providedCode.*;
 
+/**
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * FourHeap is a class that implements the FourHeap data structure, with no deletion capabilities.
+ */
 
 /**
- * TODO: Replace this comment with your own as appropriate.
  * 1. It is exactly like the binary heap we studied, except nodes should have 4 children 
  * 	  instead of 2. Only leaves and at most one other node will have fewer children. 
  * 2. Use array-based implementation, beginning at index 0 (Root should be at index 0). 
@@ -11,7 +17,6 @@ import providedCode.*;
  * 3. Throw appropriate exceptions in FourHeap whenever needed. For example, 
  * 	  when deleteMin on an empty heap, you could use UnderFlowException as is done in the Weiss text, 
  *    or you could use NoSuchElementException (in which case it will be fine if you want to import it). 
- * TODO: Develop appropriate JUnit tests for your FourHeap.
  */
 public class FourHeap<E> extends Heap<E> {
 	private Comparator<? super E> comparator;	//comparator
@@ -89,11 +94,12 @@ public class FourHeap<E> extends Heap<E> {
 		return lastIndex ==-1;
 	}
 	
-	/** Find the hole for which a specified item will be placed in the heap, going upwards.
-	 * This is done to maintain heap structure.
-	 * @param index The index of the item to percolate upwards in the heap
-	 * @param item The item to percolate upwards
-	 * @return The index of the hole that item should be placed in
+	/* Find and return the index of the hole for which a specified item 
+	 * will be placed in the heap, going upwards. This is done to maintain heap structure.
+	 * 
+	 * Parameters:
+	 * index is the index of the item to percolate upwards in the heap
+	 * item is the item to percolate upwards
 	 */
 	private int percolateUp(int index, E item){
 		while(index > 0 && comparator.compare(item, heap[(index-1)/4])<0){
@@ -103,11 +109,12 @@ public class FourHeap<E> extends Heap<E> {
 		return index; 
 	}
 	
-	/** Find the hole for which a specified item will be placed in the heap, going downwards.
-	 * This is done to maintain heap structure.
-	 * @param index The index of the item to percolate downwards in the heap
-	 * @param item The item to percolate downwards
-	 * @return The index of the hole that item should be placed in
+	/* Find and return the index for the hole for which a specified item 
+	 * will be placed in the heap, going downwards. This is done to maintain heap structure.
+	 * 
+	 * Parameters:
+	 * index is the index of the item to percolate downwards in the heap
+	 * item is the item to percolate downwards
 	 */
 	private int percolateDown(int index, E item){
 		while(((4*index)+1) <= lastIndex){

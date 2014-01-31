@@ -3,11 +3,17 @@ import static org.junit.Assert.*;
 
 import main.Sorter;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import providedCode.Comparator;
 
+/**
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * TestSorter uses JUnit testing to test our sorting algorithms in the Sorter class.
+ */
 
 public class TestSorter {
 	protected static final int TIMEOUT = 2000; // 2000ms = 2sec

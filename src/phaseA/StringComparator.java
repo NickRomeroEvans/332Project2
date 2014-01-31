@@ -1,9 +1,14 @@
 package phaseA;
 import providedCode.*;
 
-
 /**
- * TODO: Replace this comment with your own as appropriate.
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * StringComparator compares two Strings, specified below:  
+ */
+/**
  * This comparator is used by the provided code for both data-counters and 
  * sorting. Because of how the output must be sorted in the case of ties, 
  * your implementation should return a negative number when the first argument

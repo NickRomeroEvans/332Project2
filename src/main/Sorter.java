@@ -4,9 +4,11 @@ import providedCode.Comparator;
 
 
 /** 
- *  TODO: Replace this comment with your own as appropriate.
- *  Implement the sorting methods below. Do not change the provided method signature,
- *  but you may add as many other methods as you want.
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * Sorter is a class that implements Insertion sort, Heap sort, Other sort, and Top-K sort algorithms. 
  */
 public class Sorter {
 	

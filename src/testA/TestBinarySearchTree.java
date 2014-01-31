@@ -6,6 +6,14 @@ import providedCode.*;
 import test.TestDataCounter;
 
 /**
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * TestBinarySearchTree uses JUnit testing to test the implemenation of BinarySearchTree.
+ * Tests common to TestBinarySearchTree subclasses are also found here. 
+ */
+/**
  * Things to note if you're new to unit testing:
  * 1. Test names tend to be long. This lets us get away with fewer comments. 
  * 2. assertEquals(x,y) is preferable to assertTrue(x == y).

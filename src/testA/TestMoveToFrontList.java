@@ -1,8 +1,5 @@
 package testA;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -14,7 +11,13 @@ import providedCode.DataCounter;
 import providedCode.SimpleIterator;
 import test.TestDataCounter;
 
-
+/**
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * TestMoveToFrontList uses JUnit testing to test our implementation of MoveToFrontList.
+ */
 public class TestMoveToFrontList extends TestDataCounter{
 	private static final int TIMEOUT = 2000; // 2000ms = 2sec
 

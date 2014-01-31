@@ -9,6 +9,14 @@ import providedCode.DataCount;
 import providedCode.DataCounter;
 import providedCode.SimpleIterator;
 
+/**
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * TestDataCounter uses JUnit tests to test our implementation of DataCounter objects.
+ * The common testing methods for each subclass of DataCounter are found here.
+ */
 
 public abstract class TestDataCounter {
 	protected static final int TIMEOUT = 2000; // 2000ms = 2sec

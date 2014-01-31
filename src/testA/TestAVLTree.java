@@ -6,12 +6,18 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import phaseA.AVLTree;
-import providedCode.BinarySearchTree;
 import providedCode.Comparator;
 import providedCode.DataCount;
 import providedCode.DataCounter;
 import providedCode.SimpleIterator;
 
+/**
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * TestAVLTree uses JUnit testing to test our implementation of AVLTree.
+ */
 
 public class TestAVLTree extends TestBinarySearchTree {
 	/** Creates AVLTree before each test cases **/

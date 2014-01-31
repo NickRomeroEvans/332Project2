@@ -14,7 +14,13 @@ import providedCode.DataCounter;
 import test.TestDataCounter;
 import test.TestSorter;
 
-
+/**
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * TestFourHeap uses JUnit tests to test our implementation of FourHeap.
+ */
 public class TestFourHeap{
 	private static final int TIMEOUT = 2000; // 2000ms = 2sec
 	private FourHeap<Integer> fh;

@@ -2,17 +2,20 @@ package main;
 import java.io.IOException;
 
 import phaseA.*;
+import phaseB.HashTable;
 import providedCode.*;
 
 /**
- * An executable that counts the words in a files and prints out the counts in
- * descending order. You will need to modify this file.
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * WordCount counts the number of times each word in a file appears and prints those counts. 
  */
 public class WordCount {
 
 	
-	// TODO: Replace this comment with your own as appropriate.
-	// You may modify this method if you want.
+	// counter counts the amount of times each word appears in the given file
     private static void countWords(String file, DataCounter<String> counter) {
         try {
             FileWordReader reader = new FileWordReader(file);
@@ -28,9 +31,7 @@ public class WordCount {
     }
     
     
-    // TODO: Replace this comment with your own as appropriate.
-    // Implement method that returns an array of DataCount objects containing each unique word.
-    // If generics confuse you, write non-generic version first and then adjust it.
+    // Gets the DataCounts of each word and puts them into an array which it returns
  	private static <E> DataCount<E>[] getCountsArray(DataCounter<E> counter) {
  		DataCount<E>[] dataRay = (DataCount<E>[]) new DataCount[counter.getSize()];
  		SimpleIterator<DataCount<E>> si =  counter.getIterator();
@@ -53,21 +54,60 @@ public class WordCount {
     }
     
     
-    /** 
-     *  TODO: Replace this comment with your own as appropriate.
- 	 *  Edit this method (including replacing the dummy parameter checking below) 
- 	 *  to process all parameters as shown in the spec.
- 	 */
+    /**
+     * The main function. This uses the inputted arguments from the client to decide which DataCounter
+     * implementation and which sorting routine to use on the specified file's words. It creates a tally
+     * of counts for each word that appears in the specified file and then prints them to the console.
+     * 
+     * Argument descriptions:
+     * arg1: DataCounter implementation. -b for BinarySearchTree (provided), -a for AVLTree (phase A), 
+     * 		 -m for MoveToFrontList (phase A), or -h for HashTable (phase B).
+     * arg2: Sorting routine. -is for Insertion sort (provided), -hs for Heap sort (phase A), 
+     * 		 -os for Other sort (phase B), or -k followed by a number for Top-k sort (phase B).
+     * arg3: Input file name.
+     * @param args the list of arguments passed by the client
+     */
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.err.println("Usage: filename of document to analyze");
+        if (args.length > 3 && !args[1].equals("-k") || args.length < 3) {
+            System.err.println("Usage: [-DataCounter implementation] [-sorting routine] [filename of document to analyze]");
             System.exit(1);
         }
-        DataCounter<String> counter = new AVLTree<String>(new StringComparator());
-       // DataCounter<String> counter = new MoveToFrontList<String>(new StringComparator());
-        countWords(args[0], counter); 
+
+        // DataCounter implementation
+        DataCounter<String> counter = null;
+        if 		(args[0].equals("-b")) { counter = new BinarySearchTree<String>(new StringComparator()); }
+        else if (args[0].equals("-a")) { counter = new AVLTree<String>(new StringComparator()); } 
+        else if (args[0].equals("-m")) { counter = new MoveToFrontList<String>(new StringComparator()); }
+        //else if (args[1].equals("-h")) { counter = new HashTable<String>(new StringComparator()); } //implemented in phase B
+        else { 
+        	System.err.println("Must use -b (BinarySearchTree), -a (AVLTree), -m (MoveToFrontList), " +
+        					   "or -h (HashTable) for argument 1.");
+        	System.exit(1);
+        }
+        
+        // Count the words and retrieve the array representation
+        countWords(args[2], counter); 
         DataCount<String>[] counts = getCountsArray(counter);
-        Sorter.heapSort(counts, new DataCountStringComparator());
+        
+        // Choose the sorting routine and sort
+        if (args.length == 3) {
+	        if 		(args[1].equals("-is")) { Sorter.insertionSort(counts, new DataCountStringComparator()); }
+	        else if (args[1].equals("-hs")) { Sorter.heapSort(counts, new DataCountStringComparator()); } 
+	        //else if (args[1].equals("-os")) { Sorter.otherSort(counts, new DataCountStringComparator()); } //implemented in phase B
+	        else {
+	        	System.err.println("Must use -is (Insertion sort), -hs (Heap sort), -os (Other sort)," +
+	        					   " or -k <number> (Top-k sort) for argument 2.");
+	        	System.exit(1);
+	        }
+        //} else if (args.length == 4) { //implemented in phase B
+        	//if (args[1].matches("-k \d")) { Sorter.topKSort(counts, new DataCountStringComparator(), num); } //implemented in phase B
+        	//else <fail> //implemented in phase B
+        } else { 
+        	System.err.println("Must use -is (Insertion sort), -hs (Heap sort), -os (Other sort)," +
+        					   " or -k <number> (K-Sort) for argument 2.");
+        	System.exit(1);
+        }
+
         printDataCount(counts);
     }
 }

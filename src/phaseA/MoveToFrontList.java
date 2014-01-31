@@ -1,7 +1,13 @@
 package phaseA;
 import providedCode.*;
 
-
+/**
+ * Austin Briggs and Nick Evans
+ * CSE 332 AB
+ * Project 2A
+ * 
+ * MoveToFrontList is an implementation of DataCounter, specified in bullets 1-4 below:
+ */
 /**
  * 1. The list is typically not sorted.
  * 2. Add new items (with a count of 1) to the front of the list.
@@ -12,7 +18,6 @@ import providedCode.*;
  * 4. You need to implement an iterator. The iterator should not move elements
  *    to the front. The iterator should return elements in the order they are 
  *    stored in the list, starting with the first element in the list.
- * TODO: Develop appropriate JUnit tests for your MoveToFrontList.
  */
 public class MoveToFrontList<E> extends DataCounter<E> {
 	private int size; 							//Track size of list
