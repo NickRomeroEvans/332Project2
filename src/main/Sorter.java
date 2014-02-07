@@ -1,6 +1,7 @@
 package main;
 import phaseA.FourHeap;
 import providedCode.Comparator;
+import providedCode.DataCount;
 
 
 /** 
@@ -57,11 +58,85 @@ public class Sorter {
     }
     
     public static <E> void topKSort(E[] array, Comparator<E> comparator, int k) {
-    	// TODO: To-be implemented (the order of elements at index >= k does not matter)
-    }
+    	if(k>=array.length){
+    		k = array.length;
+    	}
+    	if(k<0){
+    		throw new UnsupportedOperationException("-k <number> number must be equal or greater than zero.");
+    	}
+    		//k is less than or equal array.length
+    	FourHeap<E> fh = new FourHeap<E>(comparator);
+   		int i = 0;
+   		while(i<k){
+   			fh.insert(array[i++]);
+   		}
+   		if(k!=0){
+   			while(i<array.length){
+   				if(comparator.compare(fh.findMin(),array[i])<0){
+   				fh.deleteMin();
+    				fh.insert(array[i]);
+   				}
+   				i++;
+   			}
+   		}
+   		int v = k-1;
+   		while(!fh.isEmpty()){
+   			array[v] = fh.deleteMin();
+   			v--;
+   		}
+   	}
+   
     
     public static <E> void otherSort(E[] array, Comparator<E> comparator) {
     	// TODO: To-be implemented (either mergeSort or QuickSort)
+    	E[] temp = (E[]) new Object[array.length];
+    	mergeSort(array,temp,0,array.length-1,comparator);
+    }
+    
+    private static <E> void mergeSort(E[] array, E[] temp,int begin, int end, Comparator<E> comparator){
+    	if(begin<end){
+    		int middle = (begin+end)/2;
+    		mergeSort(array, temp,begin,middle, comparator);
+    		mergeSort(array, temp,middle+1,end, comparator);
+    		merge(array,temp, begin,end,comparator);
+    	}
+    }
+    
+    /* Merge sort
+     * Needs an index tracker of beginning and end index markers
+     * Will be recursive
+     * 
+     * Goes through makes call ensures both left and right side are sorted then
+     * we use the temporary array to place the values and place them in the original 
+     * index using the begin index as the starting point
+     * 
+     * */
+    private static <E> void merge(E[] array, E[] temp,int begin, int end, Comparator<E> comparator){
+
+        int i = begin;
+        int hole = begin;
+        int middle = (begin+end)/2;
+        int rightstart = middle+1;
+        while(i <= middle && rightstart <= end){
+        	if(comparator.compare(array[i], array[rightstart])<=0){
+        		temp[hole] = array[i++];
+        	}else{
+        		temp[hole] = array[rightstart++];
+       		}
+        	hole++;
+       	}
+     
+       	while(i <= middle){
+       		temp[hole++] = array[i++];
+       	}
+       	while(rightstart <= end){
+       		temp[hole++] = array[rightstart++];
+       	}
+       	int ele = end-begin+1;
+       	for(int j =0; j < ele; j++,end--){
+       		array[end] = temp[end];
+       	}
     }
 
+    
 }

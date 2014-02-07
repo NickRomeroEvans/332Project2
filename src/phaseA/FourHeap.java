@@ -58,7 +58,9 @@ public class FourHeap<E> extends Heap<E> {
 		heap[index] = item;
 		
 	}
-
+	public int lastdex(){
+		return lastIndex;
+	}
 	/** Return the minimum value of the heap (the root).
 	 * @throws UnsupportedOperationException if the heap is empty
 	 * @return The root of the heap

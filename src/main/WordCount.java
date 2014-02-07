@@ -3,6 +3,7 @@ import java.io.IOException;
 
 import phaseA.*;
 import phaseB.HashTable;
+import phaseB.InverseDataComparator;
 import providedCode.*;
 
 /**
@@ -53,6 +54,15 @@ public class WordCount {
         }
     }
     
+    private static void printDataCountk(DataCount<String>[] counts, int k){
+    	if(k> counts.length){
+    		k = counts.length;
+    	}
+    	for(int i =0; i<k;i++){
+    		DataCount<String> c =counts[i];
+    		System.out.println(c.count + "\t" + c.data);
+    	}
+    }
     
     /**
      * The main function. This uses the inputted arguments from the client to decide which DataCounter
@@ -86,28 +96,36 @@ public class WordCount {
         }
         
         // Count the words and retrieve the array representation
-        countWords(args[2], counter); 
+        if(!args[1].equals("-k")){
+        	countWords(args[2], counter); 
+        }else{
+        	countWords(args[3], counter);
+        }
         DataCount<String>[] counts = getCountsArray(counter);
         
         // Choose the sorting routine and sort
         if (args.length == 3) {
 	        if 		(args[1].equals("-is")) { Sorter.insertionSort(counts, new DataCountStringComparator()); }
 	        else if (args[1].equals("-hs")) { Sorter.heapSort(counts, new DataCountStringComparator()); } 
-	        //else if (args[1].equals("-os")) { Sorter.otherSort(counts, new DataCountStringComparator()); } //implemented in phase B
+	        else if (args[1].equals("-os")) { Sorter.otherSort(counts, new DataCountStringComparator()); } //implemented in phase B
 	        else {
 	        	System.err.println("Must use -is (Insertion sort), -hs (Heap sort), -os (Other sort)," +
 	        					   " or -k <number> (Top-k sort) for argument 2.");
 	        	System.exit(1);
 	        }
-        //} else if (args.length == 4) { //implemented in phase B
-        	//if (args[1].matches("-k \d")) { Sorter.topKSort(counts, new DataCountStringComparator(), num); } //implemented in phase B
+        } else if (args.length == 4) { //implemented in phase B
+        	if (args[1].matches("-k")) { Sorter.topKSort(counts, new InverseDataComparator(), java.lang.Integer.parseInt(args[2])); } //implemented in phase B
         	//else <fail> //implemented in phase B
         } else { 
         	System.err.println("Must use -is (Insertion sort), -hs (Heap sort), -os (Other sort)," +
         					   " or -k <number> (K-Sort) for argument 2.");
         	System.exit(1);
         }
-
-        printDataCount(counts);
+        if(args[1].matches("-k")){
+        	printDataCountk(counts,java.lang.Integer.parseInt(args[2]));
+        }else{
+        	printDataCount(counts);
+        }
+        
     }
 }
