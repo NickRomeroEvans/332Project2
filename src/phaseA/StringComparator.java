@@ -23,6 +23,7 @@ public class StringComparator implements Comparator<String>{
 	 *
 	 * @param s1 The first String to compare
 	 * @param s2 The second String to compare
+	 * @throws IllegalArgumentException if s1 or s2 is null
 	 * @return -1 if s1 comes first alphabetically
 	 *		    0 if s1 and s2 are identical
 	 *		   +1 if s2 comes first alphabetically
@@ -31,6 +32,9 @@ public class StringComparator implements Comparator<String>{
 	public int compare(String s1, String s2) {
 		int i; 				//loop variable
 		int numCompLetters; //how high will i increment?
+		
+		// Check for null strings
+		if (s1 == null || s2 == null) throw new IllegalArgumentException("Cannot compare null Strings.");
 		
 		if (s1.length() > s2.length()) numCompLetters = s2.length();
 		else 					   numCompLetters = s1.length();
