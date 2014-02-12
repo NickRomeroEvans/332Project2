@@ -41,6 +41,7 @@ public class HashTable<E> extends DataCounter<E> {
 				return 79 - (sum % 37);
 			}
 		};
+		
 		table = (DataCount<E>[]) new DataCount[primes[0]]; 
 		keyArr = (E[]) new Object[primes[0]];
 		loadFactor = 0.0;
@@ -54,7 +55,7 @@ public class HashTable<E> extends DataCounter<E> {
 		boolean alreadyPresent = isDataPresent(data);
 		//Get hashcode
 		int hashCode = hasherH.hash(data) % table.length;
-		
+		System.out.println("Hash: "+ hashCode);
 		//If data is already present, find it in the table and increment its count
 		if (alreadyPresent) {
 			//It may not be in the first place we look - if so, use the secondary hash function to find it
@@ -66,18 +67,21 @@ public class HashTable<E> extends DataCounter<E> {
 		}
 		//If data is not already present, find a blank spot in the table and insert a new DataCount for it
 		else {
+
 			//Make a new DataCount to put in the table
 			DataCount<E> dc = new DataCount<E>(data, 1);
 			
 			//Find an empty spot and insert the new DataCount element
 			while (table[hashCode] != null) {
 				hashCode = (hashCode + hasherG.hash(data)) % table.length;
+				
 			}
 			table[hashCode] = dc;
 			
 			//Update keyArr, numItems, and loadFactor, and then check if a table resize is needed
 			keyArr[numItems] = data;
 			numItems++;
+			System.out.println(numItems);
 			loadFactor = numItems / table.length;
 			if (loadFactor >= 0.5) resizeTable();
 		}
@@ -113,6 +117,7 @@ public class HashTable<E> extends DataCounter<E> {
 		
 		table = newTable;
 		keyArr = newKeyArr;
+		System.out.println("test");
 	}
 
 	/** {@inheritDoc} */
