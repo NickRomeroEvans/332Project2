@@ -4,6 +4,7 @@ import java.io.IOException;
 import phaseA.*;
 import phaseB.HashTable;
 import phaseB.InverseDataComparator;
+import phaseB.StringHasher;
 import providedCode.*;
 
 /**
@@ -88,7 +89,7 @@ public class WordCount {
         if 		(args[0].equals("-b")) { counter = new BinarySearchTree<String>(new StringComparator()); }
         else if (args[0].equals("-a")) { counter = new AVLTree<String>(new StringComparator()); } 
         else if (args[0].equals("-m")) { counter = new MoveToFrontList<String>(new StringComparator()); }
-        //else if (args[1].equals("-h")) { counter = new HashTable<String>(new StringComparator()); } //implemented in phase B
+        else if (args[0].equals("-h")) { counter = new HashTable<String>(new StringComparator(), new StringHasher()); } //implemented in phase B
         else { 
         	System.err.println("Must use -b (BinarySearchTree), -a (AVLTree), -m (MoveToFrontList), " +
         					   "or -h (HashTable) for argument 1.");

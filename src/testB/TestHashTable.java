@@ -17,23 +17,21 @@ import test.TestDataCounter;
 
 public class TestHashTable extends TestDataCounter {
 	private static final int TIMEOUT = 2000; // 2000ms = 2sec
+	Hasher<Integer> hasher;
 	
 	/** Creates a HashTable before each test cases **/
 	@Override
 	public DataCounter<Integer> getDataCounter() {
 		dcClass = "HashTable";
-		
+		hasher = new Hasher<Integer>() {
+			public int hash(Integer e) {
+				// Add 79 to get positives results for negative e's
+				return (e + 79) % 79;
+			}
+		};
 		return new HashTable<Integer>(new Comparator<Integer>() {
 			public int compare(Integer e1, Integer e2) { return e1 - e2; }
-		}, new Hasher<Integer>() {
-			public int hash(Integer e) {
-				int sum = 0;
-				for (int i = 0; i < e.toString().length(); i++) { 
-					sum += (int) e.toString().charAt(i) * i; 
-				}
-				return sum % 79;
-			}
-		});
+		}, hasher);
 	}
 
 	@Test(timeout = TIMEOUT)
@@ -57,5 +55,28 @@ public class TestHashTable extends TestDataCounter {
 		
 		int [] returnArray = iterateAndFillArray(expectedArray.length);
 		assertArrayEquals(expectedArray, returnArray);
+	}
+	
+	
+	
+	/** Test hash function	**************************************************/
+	@Test(timeout = TIMEOUT)
+	public void test_hash_0() {
+		assertEquals(0, hasher.hash(0));
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_hash_neg_number() {
+		assertEquals(78, hasher.hash(-1));
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_hash_max() {
+		assertEquals(0, hasher.hash(79));
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_hash_past_max() {
+		assertEquals(4, hasher.hash(83));
 	}
 }
