@@ -11,7 +11,6 @@ import providedCode.*;
  * 3. To use your HashTable for WordCount, you will need to be able to hash 
  *    strings. Implement your own hashing strategy using charAt and length. 
  *    Do not use Java's hashCode method.
- * TODO: Develop appropriate JUnit tests for your HashTable.
  */
 public class HashTable<E> extends DataCounter<E> {
 	private Comparator<? super E> comparator;	//this HashTable's comparator
@@ -42,7 +41,7 @@ public class HashTable<E> extends DataCounter<E> {
 				return 79 - (sum % 37);
 			}
 		};
-		table = (DataCount<E>[]) new Object[primes[0]]; 
+		table = (DataCount<E>[]) new DataCount[primes[0]]; 
 		keyArr = (E[]) new Object[primes[0]];
 		loadFactor = 0.0;
 		numItems = 0;
@@ -89,13 +88,14 @@ public class HashTable<E> extends DataCounter<E> {
 		boolean alreadyPresent = false;
 		int i = 0;
 		while (i < keyArr.length && !alreadyPresent) {
-			if (comparator.compare(keyArr[i], data) == 0) alreadyPresent = true;
+			if (keyArr[i] != null && comparator.compare(keyArr[i], data) == 0) alreadyPresent = true;
 			i++;
 		}
 		return alreadyPresent;
 	}
 
-	// Resizes the table to a new length, copying elements over to the new table. The length will be prime.
+	// Resizes the table and key array to a new length, copying elements over to the new table 
+	// and key array. The length will be prime.
 	private void resizeTable() {
 		//Get the new length from our primes array
 		int newLen;
@@ -103,11 +103,16 @@ public class HashTable<E> extends DataCounter<E> {
 		while (primes[i] <= table.length) i++;
 		newLen = primes[i];
 		
-		//Create the new table and copy over the elements
-		DataCount<E>[] newTable = (DataCount<E>[]) new Object[newLen];
-		for (i = 0; i < table.length; i++) newTable[i] = table[i];
+		//Create the new table and key array and copy over elements
+		DataCount<E>[] newTable = (DataCount<E>[]) new DataCount[newLen];
+		E[] newKeyArr = (E[]) new Object[newLen];
+		for (i = 0; i < table.length; i++) {
+			newTable[i] = table[i];
+			newKeyArr[i] = keyArr[i];
+		}
 		
 		table = newTable;
+		keyArr = newKeyArr;
 	}
 
 	/** {@inheritDoc} */
@@ -163,7 +168,7 @@ public class HashTable<E> extends DataCounter<E> {
 				//Get the hashCode for the next element and find it in the HashTable
 				int hashCode = hasherH.hash(keyArr[itrIndex]) % table.length;
 				E data = keyArr[itrIndex];
-				while (comparator.compare(table[hashCode].data, data) != 0) {
+				while (table[hashCode] == null || comparator.compare(table[hashCode].data, data) != 0) {
 					hashCode = (hashCode + hasherG.hash(data)) % table.length;
 				}
 				

@@ -88,7 +88,6 @@ public class Sorter {
    
     
     public static <E> void otherSort(E[] array, Comparator<E> comparator) {
-    	// TODO: To-be implemented (either mergeSort or QuickSort)
     	E[] temp = (E[]) new Object[array.length];
     	mergeSort(array,temp,0,array.length-1,comparator);
     }
