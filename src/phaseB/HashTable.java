@@ -38,7 +38,7 @@ public class HashTable<E> extends DataCounter<E> {
 				for (int i = 0; i < s.toString().length(); i++) { 
 					sum += (int) s.toString().charAt(i) * i; 
 				}
-				return 37 - (sum % 37);
+				return 17 - (sum % 17);
 			}
 		};
 		
@@ -58,7 +58,7 @@ public class HashTable<E> extends DataCounter<E> {
 		//If data is already present, find it in the table and increment its count
 		if (alreadyPresent) {
 			//It may not be in the first place we look - if so, use the secondary hash function to find it
-			while (comparator.compare(table[hashCode].data, data) != 0) {
+			while (table[hashCode] == null || comparator.compare(table[hashCode].data, data) != 0) {
 				hashCode = (hashCode + hasherG.hash(data)) % table.length;
 			}
 			//Found it - increment the count
@@ -73,14 +73,14 @@ public class HashTable<E> extends DataCounter<E> {
 			//Find an empty spot and insert the new DataCount element
 			while (table[hashCode] != null) {
 				hashCode = (hashCode + hasherG.hash(data)) % table.length;
-				
+				//System.out.println("New hash code:" + hashCode);
 			}
 			table[hashCode] = dc;
 			
 			//Update keyArr, numItems, and loadFactor, and then check if a table resize is needed
 			keyArr[numItems] = data;
 			numItems++;
-			loadFactor = numItems / table.length;
+			loadFactor = 1.0 * numItems / table.length;
 			if (loadFactor >= 0.5) resizeTable();
 		}
 	}

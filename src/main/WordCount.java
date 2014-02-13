@@ -95,7 +95,6 @@ public class WordCount {
         					   "or -h (HashTable) for argument 1.");
         	System.exit(1);
         }
-        
         // Count the words and retrieve the array representation
         if(!args[1].equals("-k")){
         	countWords(args[2], counter); 
@@ -108,7 +107,7 @@ public class WordCount {
         if (args.length == 3) {
 	        if 		(args[1].equals("-is")) { Sorter.insertionSort(counts, new DataCountStringComparator()); }
 	        else if (args[1].equals("-hs")) { Sorter.heapSort(counts, new DataCountStringComparator()); } 
-	        else if (args[1].equals("-os")) { Sorter.otherSort(counts, new DataCountStringComparator()); } //implemented in phase B
+	        else if (args[1].equals("-os")) { Sorter.otherSort(counts, new DataCountStringComparator()); }
 	        else {
 	        	System.err.println("Must use -is (Insertion sort), -hs (Heap sort), -os (Other sort)," +
 	        					   " or -k <number> (Top-k sort) for argument 2.");

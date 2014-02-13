@@ -32,6 +32,7 @@ public class Correlator {
         	System.exit(1);
         }
         
+        
         //------- Get arrays of word counts from both files and sort them --------------------- //
         //Needed variables
         String file1 = args[1];
@@ -48,6 +49,33 @@ public class Correlator {
         DataCount<String>[] file2Counts = WordCount.getCountsArray(counter);
         Sorter.insertionSort(file2Counts, dcStringComparator);
 
+        
+        //------- Calculate frequencies of each word ------------------------------------------ //
+        //Calculate total words for file 1
+        int file1TotalWordCounts = 0;
+        for (int i = 0; i < file1Counts.length; i++) {
+        	file1TotalWordCounts += file1Counts[i].count;
+        }
+        //Calculate frequencies of each word in file 1
+        WordFrequency[] file1WordFrequencies = new WordFrequency[file1Counts.length];
+        for (int i = 0; i < file1WordFrequencies.length; i++) {
+        	String word = file1Counts[i].data;
+        	int wordCount = file1Counts[i].count;
+        	file1WordFrequencies[i] = new WordFrequency(word, file1TotalWordCounts, wordCount);
+        }
+        
+        //Calculate total words for file 2
+        int file2TotalWordCounts = 0;
+        for (int i = 0; i < file2Counts.length; i++) {
+        	file2TotalWordCounts += file2Counts[i].count;
+        }
+        //Calculate frequencies of each word in file 2
+        WordFrequency[] file2WordFrequencies = new WordFrequency[file1Counts.length];
+        for (int i = 0; i < file2WordFrequencies.length; i++) {
+        	String word = file1Counts[i].data;
+        	int wordCount = file1Counts[i].count;
+        	file2WordFrequencies[i] = new WordFrequency(word, file2TotalWordCounts, wordCount);
+        }
         
     	double variance = 0.0;  // TODO: Compute this variance
     	
