@@ -77,6 +77,20 @@ public class Correlator {
         	file2WordFrequencies[i] = new WordFrequency(word, file2TotalWordCounts, wordCount);
         }
         
+        
+        //------ Throw out unuseful words --------------------------------------------------- //
+        for (int i = 0; i < file1WordFrequencies.length; i++) {
+        	double freq = file1WordFrequencies[i].getFreq();
+        	if (freq > 0.01 || freq < 0.0001) file1WordFrequencies[i] = null;
+        }
+        for (int i = 0; i < file2WordFrequencies.length; i++) {
+        	double freq = file2WordFrequencies[i].getFreq();
+        	if (freq > 0.01 || freq < 0.0001) file2WordFrequencies[i] = null;
+        }
+        
+        
+        //------ 
+        
     	double variance = 0.0;  // TODO: Compute this variance
     	
     	System.out.println(variance);  // IMPORTANT: Do not change printing format. Just print the double.
