@@ -93,7 +93,7 @@ public class Sorter {
     }
     
     private static <E> void mergeSort(E[] array, E[] temp,int begin, int end, Comparator<E> comparator){
-    	if(begin<end){
+    	if(begin-end<0){
     		int middle = (begin+end)/2;
     		mergeSort(array, temp,begin,middle, comparator);
     		mergeSort(array, temp,middle+1,end, comparator);
@@ -102,8 +102,6 @@ public class Sorter {
     }
     
     /* Merge sort
-     * Needs an index tracker of beginning and end index markers
-     * Will be recursive
      * 
      * Goes through makes call ensures both left and right side are sorted then
      * we use the temporary array to place the values and place them in the original 
@@ -113,27 +111,27 @@ public class Sorter {
     private static <E> void merge(E[] array, E[] temp,int begin, int end, Comparator<E> comparator){
 
         int i = begin;
-        int hole = begin;
-        int middle = (begin+end)/2;
-        int rightstart = middle+1;
-        while(i <= middle && rightstart <= end){
+        int tracker = begin;
+        int middex = (begin+end)/2;
+        int rightstart = middex+1;
+        
+        // Goes through and compares the two segments of the array that we are focusing on.
+        while(i <= middex && rightstart <= end){
         	if(comparator.compare(array[i], array[rightstart])<=0){
-        		temp[hole] = array[i++];
+        		temp[tracker++] = array[i++];
         	}else{
-        		temp[hole] = array[rightstart++];
+        		temp[tracker++] = array[rightstart++];
        		}
-        	hole++;
        	}
      
-       	while(i <= middle){
-       		temp[hole++] = array[i++];
+       	while(i <= middex){ //Means right completed first so shifts all into temp
+       		temp[tracker++] = array[i++];
        	}
-       	while(rightstart <= end){
-       		temp[hole++] = array[rightstart++];
-       	}
-       	int ele = end-begin+1;
-       	for(int j =0; j < ele; j++,end--){
-       		array[end] = temp[end];
+       	
+       	//Number of elements in temp array that need to be put into array.
+       	int elements = tracker -begin;
+       	for(int j =0; j < elements; j++){
+       		array[begin+j] = temp[begin+j];
        	}
     }
 

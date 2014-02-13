@@ -87,8 +87,8 @@ public class TestSorter {
 	
 	@Test(timeout = TIMEOUT)
 	public void test_MergeSort_Bad(){
-		Integer[] expected = {0, 1, 2, 3, 4, 10, 15, 20,25, 30};
-		Integer[] test = 	 {3, 25 ,1, 30, 2, 20, 10, 4, 15, 0};
+		Integer[] expected = {0, 1, 2, 3, 4, 10, 15, 20};
+		Integer[] test = 	 {3 ,1, 2, 20, 10, 4, 15, 0};
 		Sorter.otherSort(test, comparator);
 		assertArrayEquals(test, expected);
 	}
