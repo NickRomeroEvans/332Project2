@@ -1,11 +1,8 @@
 package testB;
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
-import phaseA.MoveToFrontList;
 import phaseB.HashTable;
 import phaseB.StringHasher;
 import providedCode.Comparator;
@@ -92,7 +89,7 @@ public class TestHashTable extends TestDataCounter {
 	
 	
 	
-	/** Test hash function	**************************************************/
+	/** Test Integer hash function	*******************************************/
 	@Test(timeout = TIMEOUT)
 	public void test_hash_0() {
 		assertEquals(0, hasher.hash(0));
@@ -111,5 +108,26 @@ public class TestHashTable extends TestDataCounter {
 	@Test(timeout = TIMEOUT)
 	public void test_hash_past_max() {
 		assertEquals(4, hasher.hash(83));
+	}
+	
+	/** Test String hash function  ***********************************************/
+	@Test(timeout = TIMEOUT)
+	public void test_string_hash_0() {
+		Hasher<String> stringHasher = new StringHasher();
+		assertEquals(0, stringHasher.hash("0"));
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_string_hash_max() {
+		Hasher<String> stringHasher = new StringHasher();
+		//0*0 + 9*1 + 9*2 + 9*3 + 0*4 + 5*5 = 79
+		assertEquals(0, stringHasher.hash("099905"));
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_string_hash_past_max() {
+		Hasher<String> stringHasher = new StringHasher();
+		//0*0 + 9*1 + 9*2 + 9*3 + 0*4 + 5*7 = 89
+		assertEquals(10, stringHasher.hash("099907"));
 	}
 }
