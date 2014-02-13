@@ -18,7 +18,7 @@ public class WordCount {
 
 	
 	// counter counts the amount of times each word appears in the given file
-    private static void countWords(String file, DataCounter<String> counter) {
+	public static void countWords(String file, DataCounter<String> counter) {
         try {
             FileWordReader reader = new FileWordReader(file);
             String word = reader.nextWord();
@@ -34,7 +34,7 @@ public class WordCount {
     
     
     // Gets the DataCounts of each word and puts them into an array which it returns
- 	private static <E> DataCount<E>[] getCountsArray(DataCounter<E> counter) {
+    public static <E> DataCount<E>[] getCountsArray(DataCounter<E> counter) {
  		DataCount<E>[] dataRay = (DataCount<E>[]) new DataCount[counter.getSize()];
  		SimpleIterator<DataCount<E>> si =  counter.getIterator();
  		int i = 0;
