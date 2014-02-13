@@ -9,7 +9,6 @@ import phaseA.MoveToFrontList;
 import phaseA.StringComparator;
 import providedCode.BinarySearchTree;
 import providedCode.DataCount;
-import providedCode.DataCountStringComparator;
 import providedCode.DataCounter;
 import providedCode.FileWordReader;
 
@@ -24,11 +23,21 @@ public class Correlator {
         }
 
         //------- Choose the DataCounter implementation -------------------------------------- //
-        DataCounter<String> counter = null;
-        if 		(args[0].equals("-b")) { counter = new BinarySearchTree<String>(new StringComparator()); }
-        else if (args[0].equals("-a")) { counter = new AVLTree<String>(new StringComparator()); } 
-        else if (args[0].equals("-m")) { counter = new MoveToFrontList<String>(new StringComparator()); }
-        else if (args[0].equals("-h")) { counter = new HashTable<String>(new StringComparator(), new StringHasher()); }
+        DataCounter<String> counter  = null;
+        DataCounter<String> counter2 = null;
+        if 		(args[0].equals("-b")) { 
+        	counter  = new BinarySearchTree<String>(new StringComparator()); 
+        	counter2 = new BinarySearchTree<String>(new StringComparator());
+        } else if (args[0].equals("-a")) { 
+        	counter  = new AVLTree<String>(new StringComparator()); 
+        	counter2 = new AVLTree<String>(new StringComparator());
+        } else if (args[0].equals("-m")) { 
+        	counter  = new MoveToFrontList<String>(new StringComparator()); 
+        	counter2 = new MoveToFrontList<String>(new StringComparator());
+        } else if (args[0].equals("-h")) { 
+        	counter  = new HashTable<String>(new StringComparator(), new StringHasher());
+        	counter2 = new HashTable<String>(new StringComparator(), new StringHasher());
+        }
         else { 
         	System.err.println("Must use -b (BinarySearchTree), -a (AVLTree), -m (MoveToFrontList), " +
         					   "or -h (HashTable) for argument 1.");
@@ -44,12 +53,13 @@ public class Correlator {
         
         //File 1
         int file1TotalWordCounts = wordCount(file1, counter);
-        DataCount<String>[] file1Counts = WordCount.getCountsArray(counter); //?
+        DataCount<String>[] file1Counts = WordCount.getCountsArray(counter);
         Sorter.heapSort(file1Counts, dcComparator);
         
+        
         //File 2
-        int file2TotalWordCounts = wordCount(file2, counter);
-        DataCount<String>[] file2Counts = WordCount.getCountsArray(counter);
+        int file2TotalWordCounts = wordCount(file2, counter2);
+        DataCount<String>[] file2Counts = WordCount.getCountsArray(counter2);
         Sorter.heapSort(file2Counts, dcComparator);
 
         
@@ -60,10 +70,9 @@ public class Correlator {
         int arr1Index = 0;
         int arr2Index = 0;
         while (arr1Index < file1Counts.length && arr2Index < file2Counts.length) {
-        	//Calculate each current word's frequency
-        	//System.out.println(file1Counts[arr1Index].count);
         	double freq1 = 1.0 * file1Counts[arr1Index].count / file1TotalWordCounts;
         	double freq2 = 1.0 * file2Counts[arr2Index].count / file2TotalWordCounts;
+        	
         	//Are the current words useful?
         	boolean freq1Useful = freq1 <= 0.01 && freq1 >= 0.0001;
         	boolean freq2Useful = freq2 <= 0.01 && freq2 >= 0.0001;
@@ -76,15 +85,9 @@ public class Correlator {
         	//If both words are useful and are the same word, use them in the Euclidean calculation
         	if (freq1Useful && freq2Useful && compareResult == 0) {
         		double difference = freq1 - freq2;
-            	//System.out.println(file1Counts[arr1Index].count);
-            	variance += Math.pow(difference, 2);//difference * difference;
+            	variance += Math.pow(difference, 2);
         		arr1Index++;
         		arr2Index++;
-        		//System.out.println("Word1: " + word1 + " - freq: " + freq1);
-        		//System.out.println("Word2: " + word2 + " - freq: " + freq2);
-        		//System.out.println("Difference: " + difference);
-        		//System.out.println("Difference sq'd: " + difference * difference);
-        		//System.out.println();
         	}
         	//If both words are useful but not the same, iterate 
         	//forward from the smaller (alphabetically) of the two
