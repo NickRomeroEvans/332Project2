@@ -38,7 +38,7 @@ public class HashTable<E> extends DataCounter<E> {
 				for (int i = 0; i < s.toString().length(); i++) { 
 					sum += (int) s.toString().charAt(i) * i; 
 				}
-				return 79 - (sum % 37);
+				return 37 - (sum % 37);
 			}
 		};
 		
@@ -55,7 +55,6 @@ public class HashTable<E> extends DataCounter<E> {
 		boolean alreadyPresent = isDataPresent(data);
 		//Get hashcode
 		int hashCode = hasherH.hash(data) % table.length;
-		System.out.println("Hash: "+ hashCode);
 		//If data is already present, find it in the table and increment its count
 		if (alreadyPresent) {
 			//It may not be in the first place we look - if so, use the secondary hash function to find it
@@ -81,7 +80,6 @@ public class HashTable<E> extends DataCounter<E> {
 			//Update keyArr, numItems, and loadFactor, and then check if a table resize is needed
 			keyArr[numItems] = data;
 			numItems++;
-			System.out.println(numItems);
 			loadFactor = numItems / table.length;
 			if (loadFactor >= 0.5) resizeTable();
 		}
@@ -117,7 +115,6 @@ public class HashTable<E> extends DataCounter<E> {
 		
 		table = newTable;
 		keyArr = newKeyArr;
-		System.out.println("test");
 	}
 
 	/** {@inheritDoc} */

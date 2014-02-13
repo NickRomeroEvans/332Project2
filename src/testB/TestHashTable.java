@@ -34,6 +34,7 @@ public class TestHashTable extends TestDataCounter {
 		}, hasher);
 	}
 
+	/** Test resize	 *********************************************************/
 	@Test(timeout = TIMEOUT)
 	public void test_structure_after_resize() {
 		int[] testInsertArray = {0,1,2,3,4,5};
@@ -54,6 +55,38 @@ public class TestHashTable extends TestDataCounter {
 		for(int num : expectedArray) { dc.incCount(num); }
 		
 		int [] returnArray = iterateAndFillArray(expectedArray.length);
+		assertArrayEquals(expectedArray, returnArray);
+	}
+	
+	
+	/** Test collisions  *****************************************************/
+	@Test(timeout = TIMEOUT)
+	public void test_one_collision() {
+		int[] insertArray = {1, 1};
+		for(int num : insertArray) { dc.incCount(num); }
+		
+		int[] expectedArray = {1};
+		int[] returnArray = iterateAndFillArray(expectedArray.length);
+		assertArrayEquals(expectedArray, returnArray);
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_two_different_collisions() {
+		int[] insertArray = {0, 1, 0, 1};
+		for(int num : insertArray) { dc.incCount(num); }
+		
+		int[] expectedArray = {0, 1};
+		int[] returnArray = iterateAndFillArray(expectedArray.length);
+		assertArrayEquals(expectedArray, returnArray);
+	}
+	
+	@Test(timeout = TIMEOUT)
+	public void test_two_of_same_collision() {
+		int[] insertArray = {1, 1, 1};
+		for(int num : insertArray) { dc.incCount(num); }
+		
+		int[] expectedArray = {1};
+		int[] returnArray = iterateAndFillArray(expectedArray.length);
 		assertArrayEquals(expectedArray, returnArray);
 	}
 	
