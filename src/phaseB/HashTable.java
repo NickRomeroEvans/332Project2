@@ -94,26 +94,27 @@ public class HashTable<E> extends DataCounter<E> {
 		while (primes[i] <= table.length) i++;
 		newLen = primes[i];
 		//Hold Old key and table array
-		
+		int oldItems = numItems;
 		DataCount<E>[] oldTable = table;
 		E[] oldKeyArr = keyArr;
 		//Create the new table and key array and copy over elements
 		table = (DataCount<E>[]) new DataCount[newLen];
 		keyArr = (E[]) new Object[newLen];
 		numItems = 0;
-		for (i = 0; i < oldTable.length; i++) {
-			//System.out.println(i);
-			while(oldTable[i] == null){
-				i++;
-				if(i == oldTable.length)return;
+		for (i = 0; i < oldItems; i++) {
+			E nextData = oldKeyArr[i];
+			int hashFind = hasherH.hash(nextData) % oldTable.length;
+			while(comparator.compare(oldTable[hashFind].data, nextData) != 0){
+				hashFind = (hashFind + hasherG.hash(nextData)) % oldTable.length;
 			}
-			E data =oldTable[i].data;
+			
+			E data =oldTable[hashFind].data;
 			incCount(data);
 			int hashCode = hasherH.hash(data)% table.length;
 			while(comparator.compare(table[hashCode].data, data) != 0){
 				hashCode = (hashCode + hasherG.hash(data)) % table.length;
 			}
-			table[hashCode].count = oldTable[i].count;
+			table[hashCode].count = oldTable[hashFind].count;
 			
 		}
 	}
