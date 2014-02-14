@@ -1,10 +1,4 @@
-/* Austin Briggs and Nick Evans
- * 2/13/14
- * CSE 332 AB
- * Sam Wilson
- * Project 2B - Shake n Bacon
- */
-package phaseB;
+package writeupExperiment;
 import providedCode.Hasher;
 
 /**
@@ -24,8 +18,8 @@ public class StringHasher implements Hasher<String> {
 			//Subtract 48 to get ASCII char value for 0 equal to 0
 			int asciiVal = (int) s.charAt(i) - 48;
 			//In case ASCII val is less than 48 (prevents a negative hash code)
-			if (asciiVal < 0) asciiVal += 79;
-			sum += asciiVal * i;
+			if (asciiVal < 0) asciiVal += 53;
+			sum += asciiVal;
 		}
 		return sum;
 	}

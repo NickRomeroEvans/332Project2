@@ -79,7 +79,8 @@ public class WordCount {
      * @param args the list of arguments passed by the client
      */
     public static void main(String[] args) {
-        if (args.length > 3 && !args[1].equals("-k") || args.length < 3) {
+        // Check the arguments
+    	if (args.length > 3 && !args[1].equals("-k") || args.length < 3) {
             System.err.println("Usage: [-DataCounter implementation] [-sorting routine] [filename of document to analyze]");
             System.exit(1);
         }
@@ -95,6 +96,8 @@ public class WordCount {
         					   "or -h (HashTable) for argument 1.");
         	System.exit(1);
         }
+        
+        
         // Count the words and retrieve the array representation
         if(!args[1].equals("-k")){
         	countWords(args[2], counter); 
@@ -103,8 +106,9 @@ public class WordCount {
         }
         DataCount<String>[] counts = getCountsArray(counter);
         
+        
         // Choose the sorting routine and sort
-        if (args.length == 3) {
+        if (args.length == 3) {			// topKSort was not chosen
 	        if 		(args[1].equals("-is")) { Sorter.insertionSort(counts, new DataCountStringComparator()); }
 	        else if (args[1].equals("-hs")) { Sorter.heapSort(counts, new DataCountStringComparator()); } 
 	        else if (args[1].equals("-os")) { Sorter.otherSort(counts, new DataCountStringComparator()); }
@@ -113,14 +117,16 @@ public class WordCount {
 	        					   " or -k <number> (Top-k sort) for argument 2.");
 	        	System.exit(1);
 	        }
-        } else if (args.length == 4) { //implemented in phase B
+        } else if (args.length == 4) {	// topKSort was picked
         	if (args[1].matches("-k")) { Sorter.topKSort(counts, new InverseDataComparator(), java.lang.Integer.parseInt(args[2])); } //implemented in phase B
-        	//else <fail> //implemented in phase B
-        } else { 
+        } else {						// incorrect arguments
         	System.err.println("Must use -is (Insertion sort), -hs (Heap sort), -os (Other sort)," +
         					   " or -k <number> (K-Sort) for argument 2.");
         	System.exit(1);
         }
+        
+        
+        //Print differently depending on whether or not topKSort was chosen
         if(args[1].matches("-k")){
         	printDataCountk(counts,java.lang.Integer.parseInt(args[2]));
         }else{

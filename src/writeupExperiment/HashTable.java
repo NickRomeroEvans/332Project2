@@ -1,10 +1,4 @@
-/* Austin Briggs and Nick Evans
- * 2/13/14
- * CSE 332 AB
- * Sam Wilson
- * Project 2B - Shake n Bacon
- */
-package phaseB;
+package writeupExperiment;
 import providedCode.*;
 
 
@@ -60,26 +54,35 @@ public class HashTable<E> extends DataCounter<E> {
 		//First check to see if data is already present in the HashTable
 		//Get hashcode
 		int hashCode = hasherH.hash(data) % table.length;
-		
 		//If data is already present, find it in the table and increment its count
-		//It may not be in the first place we look - if so, use the secondary hash function to find it
-		while (table[hashCode] != null && comparator.compare(table[hashCode].data, data) != 0) {
-			hashCode = (hashCode + hasherG.hash(data)) % table.length;
-		}
-		
-		//It's not in the table - make a new DataCount and add it in
-		if(table[hashCode] == null){
-			DataCount<E> dc = new DataCount<E>(data, 1);
-			table[hashCode] = dc;
-			keyArr[numItems] = data;
-			numItems++;
-			loadFactor = 1.0 * numItems / table.length;
-			if (loadFactor >= 0.5) resizeTable();
-		}
-		//Found it - increment the count
-		else if(comparator.compare(table[hashCode].data, data) == 0){
-			table[hashCode].count++;
-		}
+			//It may not be in the first place we look - if so, use the secondary hash function to find it
+			while (table[hashCode] != null && comparator.compare(table[hashCode].data, data) != 0) {
+				hashCode = (hashCode + hasherG.hash(data)) % table.length;
+			}
+			
+			
+			if(table[hashCode] == null){								//Add new word
+				DataCount<E> dc = new DataCount<E>(data, 1);
+				table[hashCode] = dc;
+				keyArr[numItems] = data;
+				numItems++;
+				loadFactor = 1.0 * numItems / table.length;
+				if (loadFactor >= 0.5) resizeTable();
+			}else if(comparator.compare(table[hashCode].data, data) == 0){//Found it - increment the count
+				table[hashCode].count++;
+			}
+		//If data is not already present, find a blank spot in the table and insert a new DataCount for it
+		//else {
+
+			//Make a new DataCount to put in the table
+
+			
+			//Find an empty spot and insert the new DataCount element
+
+			
+			//Update keyArr, numItems, and loadFactor, and then check if a table resize is needed
+
+		//}
 	}
 	
 	// Resizes the table and key array to a new length, copying elements over to the new table 
@@ -90,33 +93,27 @@ public class HashTable<E> extends DataCounter<E> {
 		int i = 0;
 		while (primes[i] <= table.length) i++;
 		newLen = primes[i];
-		
-		//Hold old key and table array
+		//Hold Old key and table array
 		int oldItems = numItems;
 		DataCount<E>[] oldTable = table;
 		E[] oldKeyArr = keyArr;
-		
 		//Create the new table and key array and copy over elements
 		table = (DataCount<E>[]) new DataCount[newLen];
 		keyArr = (E[]) new Object[newLen];
 		numItems = 0;
 		for (i = 0; i < oldItems; i++) {
 			E nextData = oldKeyArr[i];
-			
-			//Find a free position in the updated table to put in the current element
 			int hashFind = hasherH.hash(nextData) % oldTable.length;
 			while(comparator.compare(oldTable[hashFind].data, nextData) != 0){
 				hashFind = (hashFind + hasherG.hash(nextData)) % oldTable.length;
 			}
 			
-			//Insert the current element
-			E data = oldTable[hashFind].data;
+			E data =oldTable[hashFind].data;
 			incCount(data);
 			int hashCode = hasherH.hash(data)% table.length;
 			while(comparator.compare(table[hashCode].data, data) != 0){
 				hashCode = (hashCode + hasherG.hash(data)) % table.length;
 			}
-			//Update the count to its correct amount
 			table[hashCode].count = oldTable[hashFind].count;
 			
 		}
@@ -136,13 +133,9 @@ public class HashTable<E> extends DataCounter<E> {
 		while (table[hashCode] != null && comparator.compare(table[hashCode].data, data) != 0) {
 			hashCode = (hashCode + hasherG.hash(data)) % table.length;
 		}
-
-		//It's not in the table - count is 0
 		if(table[hashCode] == null){
 			return 0;
-		}
-		//It is in the table - return the count
-		else{
+		}else{
 			return table[hashCode].count;
 		}
 	}

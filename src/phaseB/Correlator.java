@@ -1,3 +1,9 @@
+/* Austin Briggs and Nick Evans
+ * 2/13/14
+ * CSE 332 AB
+ * Sam Wilson
+ * Project 2B - Shake n Bacon
+ */
 package phaseB;
 
 import java.io.IOException;
@@ -12,7 +18,10 @@ import providedCode.DataCount;
 import providedCode.DataCounter;
 import providedCode.FileWordReader;
 
-
+/**
+ * Correlator uses a user-specified (through command line args) DataCounter to determine how
+ * correlated 2 specified files are. It uses Euclidean distance calculations to do so.
+ */
 public class Correlator {
 	
 	

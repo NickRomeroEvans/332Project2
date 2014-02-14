@@ -1,3 +1,9 @@
+/* Austin Briggs and Nick Evans
+ * 2/13/14
+ * CSE 332 AB
+ * Sam Wilson
+ * Project 2B - Shake n Bacon
+ */
 package testB;
 import static org.junit.Assert.*;
 
@@ -11,7 +17,9 @@ import providedCode.Hasher;
 
 import test.TestDataCounter;
 
-
+/**
+ * TestHashTable uses JUnit testing to test our implementation of HashTable.
+ */
 public class TestHashTable extends TestDataCounter {
 	private static final int TIMEOUT = 2000; // 2000ms = 2sec
 	Hasher<Integer> hasher;
@@ -121,13 +129,13 @@ public class TestHashTable extends TestDataCounter {
 	public void test_string_hash_max() {
 		Hasher<String> stringHasher = new StringHasher();
 		//0*0 + 9*1 + 9*2 + 9*3 + 0*4 + 5*5 = 79
-		assertEquals(0, stringHasher.hash("099905"));
+		assertEquals(79, stringHasher.hash("099905"));
 	}
 	
 	@Test(timeout = TIMEOUT)
 	public void test_string_hash_past_max() {
 		Hasher<String> stringHasher = new StringHasher();
 		//0*0 + 9*1 + 9*2 + 9*3 + 0*4 + 5*7 = 89
-		assertEquals(10, stringHasher.hash("099907"));
+		assertEquals(89, stringHasher.hash("099907"));
 	}
 }

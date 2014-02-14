@@ -1,3 +1,9 @@
+/* Austin Briggs and Nick Evans
+ * 2/13/14
+ * CSE 332 AB
+ * Sam Wilson
+ * Project 2A - Shake n Bacon
+ */
 package phaseA;
 import providedCode.*;
 
