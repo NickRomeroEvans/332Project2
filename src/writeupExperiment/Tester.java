@@ -13,9 +13,9 @@ public class Tester {
 
 	
 	public static void main(String[] args) {
-		test9();
+		//test9();
 		//test9d();
-		//test10();
+		test10();
 	}
 	
 	private static void test9d() {
@@ -39,9 +39,9 @@ public class Tester {
 		
 		int i = 0;
 		for (int n : ns) {
-			String[] arr1 = {"-b", "-k", ""+n, "hamlet.txt"};
+			String[] arr1 = {"-b", "-k", ""+n, "dictionary.txt"};
 			runtimes1[i] = getAverageRuntime(arr1);
-			String[] arr2 = {"-b", "-hs", ""+n, "hamlet.txt"};
+			String[] arr2 = {"-b", "-hs", ""+n, "dictionary.txt"};
 			runtimes2[i] = getAverageRuntime(arr2);
 			i++;
 		}
