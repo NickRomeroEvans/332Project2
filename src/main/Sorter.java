@@ -57,6 +57,12 @@ public class Sorter {
     	}
     }
     
+    /**
+     * Sorts the first topK elements of array.
+     * @param array the selected array that needs to be sorted.
+     * @param comparator the Comparator used to compare the elements
+     * @param k the amount of elements that 
+     * */
     public static <E> void topKSort(E[] array, Comparator<E> comparator, int k) {
     	if(k>=array.length){
     		k = array.length;
@@ -67,9 +73,11 @@ public class Sorter {
     		//k is less than or equal array.length
     	FourHeap<E> fh = new FourHeap<E>(comparator);
    		int i = 0;
+   		//Insert the first k elements
    		while(i<k){
    			fh.insert(array[i++]);
    		}
+   		//Compare the root of the heap and 
    		if(k!=0){
    			while(i<array.length){
    				if(comparator.compare(fh.findMin(),array[i])<0){
@@ -79,6 +87,7 @@ public class Sorter {
    				i++;
    			}
    		}
+   		//Unloads the sorted k elements into array
    		int v = k-1;
    		while(!fh.isEmpty()){
    			array[v] = fh.deleteMin();
@@ -86,17 +95,25 @@ public class Sorter {
    		}
    	}
    
-    
+    /**
+     * Sort using a MergeSort.
+     * @param array that will be using merge sort algorithm array representation
+     * @param comparator A comparator used to compare values in array
+     */
     public static <E> void otherSort(E[] array, Comparator<E> comparator) {
     	E[] temp = (E[]) new Object[array.length];
     	mergeSort(array,temp,0,array.length-1,comparator);
     }
     
+    // Divides the array into a left and right.
     private static <E> void mergeSort(E[] array, E[] temp,int begin, int end, Comparator<E> comparator){
     	if(begin-end<0){
     		int middle = (begin+end)/2;
+    		//Left side
     		mergeSort(array, temp,begin,middle, comparator);
+    		//Right side
     		mergeSort(array, temp,middle+1,end, comparator);
+    		//Merge both sides
     		merge(array,temp, begin,end,comparator);
     	}
     }
@@ -127,6 +144,7 @@ public class Sorter {
        	while(i <= middex){ //Means right completed first so shifts all into temp
        		temp[tracker++] = array[i++];
        	}
+       	//Doesn't put right side elements into the temp array because they are already in order.
        	
        	//Number of elements in temp array that need to be put into array.
        	int elements = tracker -begin;

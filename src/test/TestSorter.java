@@ -40,7 +40,7 @@ public class TestSorter {
 	@Test(timeout = TIMEOUT)
 	public void test_heapSort_sorted_unique_inserts(){
 		Integer[] expected = {0, 1, 2, 3, 4};
-		Integer[] test = expected;
+		Integer[] test = {0,1,2,3,4};
 		Sorter.heapSort(test, comparator);
 		assertArrayEquals(test, expected);
 	}
@@ -54,7 +54,7 @@ public class TestSorter {
 	}
 	
 	@SuppressWarnings("deprecation")
-	@Test
+	@Test(timeout = TIMEOUT)
 	public void test_MergeSort_Empty(){
 		Integer[] test = {};
 		Sorter.otherSort(test, comparator);
