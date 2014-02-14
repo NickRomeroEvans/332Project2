@@ -105,6 +105,7 @@ public class Correlator {
     	System.out.println(variance);  // IMPORTANT: Do not change printing format. Just print the double.
     }
     
+	//Count the total amount of words in a file and individual word counts as well.
     private static int wordCount(String file, DataCounter<String> counter) {
 	    int numWords = 0;
     	try {
